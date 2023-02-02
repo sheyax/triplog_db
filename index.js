@@ -8,6 +8,13 @@ var datafeed = require("./controllers/datafeed");
 
 const app = express();
 
+app.use(
+  cors({
+    //credentials: true,
+    origin: "*", //endpoint url
+  })
+);
+
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
 app.use(bodyParser.json());
 
