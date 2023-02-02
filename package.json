@@ -1,0 +1,33 @@
+{
+  "name": "triplog_db",
+  "version": "1.0.0",
+  "description": "drivers trip logging database backend ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheyax/triplog_db.git"
+  },
+  "author": "ewomi_tech",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sheyax/triplog_db/issues"
+  },
+  "homepage": "https://github.com/sheyax/triplog_db#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "do": "^0.6.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-jwt": "^8.4.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.0",
+    "nodemon": "^2.0.20"
+  }
+}
