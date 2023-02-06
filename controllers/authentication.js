@@ -8,7 +8,10 @@ const jwtauth = require("./authorization");
 
 //driver register
 router.post("/driver/register", async (res, req) => {
-  res.set("Access-Control-Allow-Origin", "*");
+  res.set(
+    "Access-Control-Allow-Origin",
+    "https://o2j6sr-3000.preview.csb.app/"
+  );
   res.set("Access-Control-Allow-Methods", "GET,POST, PUT, DELETE, OPTIONS");
   res.set("Access-Control-Allow-Headers", "Content-Type");
   res.set("Access-Control-Allow-Credentials", "true");

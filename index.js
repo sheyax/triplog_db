@@ -4,10 +4,6 @@ require("./db");
 const cors = require("cors");
 const app = express();
 
-var corsOptions = {
-  origin: "https://o2j6sr-3000.preview.csb.app",
-};
-
 app.use(
   cors({
     origin: "https://o2j6sr-3000.preview.csb.app",
