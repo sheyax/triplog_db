@@ -16,6 +16,11 @@ app.use(bodyParser.json());
 var authentication = require("./controllers/authentication");
 var datafeed = require("./controllers/datafeed");
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
 
 app.use("/auth", authentication);
