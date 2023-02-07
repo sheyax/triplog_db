@@ -15,7 +15,7 @@ router.post("/driver/register", async (res, req) => {
   //create driver
   const newDriver = new Driver({
     username: req.body.username,
-    password: hashPassword,
+    password: req.body.password,
     driverId: req.body.driverId,
     vehicle: req.body.assignedVehicle,
     vehicleModel: req.body.vehicleModel,
