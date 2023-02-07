@@ -7,19 +7,19 @@ const DriverSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    // required: true,
+    required: true,
   },
   driverId: {
     type: String,
-    //required: true,
+    required: true,
   },
   assignedVehicle: {
     type: String,
-    //required: true,
+    required: true,
   },
   vehicleModel: {
     type: String,
-    // required: true,
+    required: true,
   },
   dailyTrips: {
     type: [
