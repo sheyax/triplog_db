@@ -7,28 +7,28 @@ const Admin = require("../models/admins");
 const jwtauth = require("./authorization");
 
 //driver register
-router.post("/driver/register", async (res, req) => {
+router.post("/register", async (req, res) => {
   //Generate hashpassword
   const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(req.body.password, salt);
+  //const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-  //create driver
-  const newDriver = new Driver({
+  //Create a new user
+  const user = new Driver({
     username: req.body.username,
-    password: req.body.password,
     driverId: req.body.driverId,
-    vehicle: req.body.assignedVehicle,
+    password: req.body.password,
+    assignedVehicle: req.body.vehicle,
     vehicleModel: req.body.vehicleModel,
   });
 
-  //save driver
-  result = await newDriver.save();
+  //save user
+  result = await user.save();
   const { password, ...data } = await result.toJSON();
   res.send(data);
 });
 
 // admin register
-router.post("/admin/register", jwtauth("admin"), async (res, req) => {
+router.post("/admin/register", jwtauth("admin"), async (req, res) => {
   //Generate hashpassword
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);

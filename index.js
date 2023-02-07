@@ -1,20 +1,32 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-require("./db");
 const cors = require("cors");
+const express = require("express");
+// const exphbs = require('express-handlebars')
+const bodyParser = require("body-parser");
 const app = express();
+const cookieParser = require("cookie-parser");
+require("./db");
+require("dotenv").config();
+global.__basedir = __dirname;
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
+var corsOptions = {
+  origin: "*",
+};
+
+var auth = require("./controllers/authentication");
+var feed = require("./controllers/datafeed");
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-var authentication = require("./controllers/authentication");
-var datafeed = require("./controllers/datafeed");
+app.use(express.urlencoded({ extended: true }));
 
-app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const port = 5000;
+let port = 5000;
+app.listen(port, () => {
+  console.log(`Running at localhost:${port}`);
+});
 
-app.listen(port);
-app.use("/auth", authentication);
-app.use("/feed", datafeed);
+app.use("/auth", auth);
+app.use("/feed", feed);
