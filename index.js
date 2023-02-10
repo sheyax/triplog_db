@@ -9,7 +9,8 @@ require("dotenv").config();
 global.__basedir = __dirname;
 
 var corsOptions = {
-  origin: "*",
+  origin: "https://o2j6sr-3000.preview.csb.app",
+  credentials: true,
 };
 
 var auth = require("./controllers/authentication");

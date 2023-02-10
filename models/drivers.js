@@ -21,20 +21,19 @@ const DriverSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dailyTrips: {
-    type: [
-      {
-        date: { type: Date },
-        startTime: { type: String },
-        endTime: { type: String },
-        startLocation: { type: String },
-        endLocation: { type: String },
-        startOdometer: { type: String },
-        endOdometer: { type: String },
-        aprroved: { type: Boolean, default: false },
-      },
-    ],
-  },
+  dailyTrips: [
+    {
+      date: { type: Date },
+      startTime: { type: String },
+      endTime: { type: String },
+      startLocation: { type: String },
+      endLocation: { type: String },
+      startOdometer: { type: String },
+      endOdometer: { type: String },
+      aprroved: { type: Boolean, default: false },
+    },
+  ],
+
   roles: {
     type: String,
     default: "user",
