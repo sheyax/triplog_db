@@ -23,7 +23,7 @@ const DriverSchema = new mongoose.Schema({
   },
   dailyTrips: [
     {
-      date: { type: Date },
+      date: { type: String },
       startTime: { type: String },
       endTime: { type: String },
       startLocation: { type: String },

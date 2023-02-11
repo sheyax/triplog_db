@@ -5,6 +5,7 @@ var ObjectId = require("mongoose").Types.ObjectId;
 
 const Driver = require("../models/drivers");
 const Admin = require("../models/admins");
+const Engineer = require("../models/engineers");
 const jwtauth = require("./authorization");
 
 //driver register
@@ -42,6 +43,25 @@ router.post("/admin/register", jwtauth("admin"), async (req, res) => {
 
   //save Admin
   result = await newAdmin.save();
+  const { password, ...data } = await result.toJSON();
+  res.send(data);
+});
+
+// engineer register
+router.post("/engineer/register", async (req, res) => {
+  //Generate hashpassword
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+  //create driver
+  const newEngineer = new Engineer({
+    driverId: req.body.driverId,
+    engineerId: req.body.engineerId,
+    password: hashPassword,
+  });
+
+  //save Admin
+  result = await newEngineer.save();
   const { password, ...data } = await result.toJSON();
   res.send(data);
 });
@@ -180,6 +200,72 @@ router.post("/admin/login", async (req, res) => {
   }
 });
 
+// login Engineer
+router.post("/engineer/login", async (req, res) => {
+  const { engineerId, password } = req.body;
+
+  if (engineerId == "" || password == "") {
+    res.json({
+      status: "Failed",
+      message: "empty credentials",
+    });
+  } else {
+    //   check user exists
+    Engineer.find({ engineerId })
+      .then((data) => {
+        if (data.length) {
+          const hashPassword = data[0].password;
+          bcrypt
+            .compare(password, hashPassword)
+            .then(async (result) => {
+              if (result) {
+                const token = await jwt.sign(
+                  {
+                    engineerId: data[0].engineerId,
+
+                    roles: data[0].roles,
+                  },
+                  "jwtSecret"
+                );
+
+                res.cookie("jwt", token, {
+                  httpOnly: true,
+                  maxAge: 24 * 60 * 60 * 1000, //1 day
+                });
+
+                res.json({
+                  status: "success",
+                  message: "Login Successful",
+                  data: data,
+                });
+              } else {
+                res.json({
+                  status: "Failed",
+                  message: "Error: invalid password",
+                });
+              }
+            })
+            .catch((err) => {
+              res.json({
+                status: "Failed",
+                message: "An error occured checking password",
+              });
+            });
+        } else {
+          res.json({
+            status: "Failed",
+            message: "Invalid credentials",
+          });
+        }
+      })
+      .catch((err) => {
+        res.json({
+          status: "Failed",
+          message: "An error occured checking user details",
+        });
+      });
+  }
+});
 //Logout
 
 router.delete("/logout", (req, res) => {
@@ -281,7 +367,23 @@ router.put("/driver/trip/:id", async (req, res) => {
   try {
     let driver = await Driver.findById(req.params.id);
     driver.dailyTrips.push(newTrip);
-    res.send(driver.dailyTrips);
+    Driver.findByIdAndUpdate(
+      req.params.id,
+      { $set: driver },
+      { new: true },
+      (err, docs) => {
+        if (!err) {
+          res.send({
+            status: "success",
+            docs,
+          });
+        } else {
+          console.log(
+            "Error updating the record" + JSON.stringify(err, undefined, 2)
+          );
+        }
+      }
+    );
   } catch (err) {
     res.send({
       status: "Failed",
