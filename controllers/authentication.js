@@ -391,4 +391,34 @@ router.put("/driver/trip/:id", async (req, res) => {
     });
   }
 });
+
+//get specific trip
+
+// router.get("/driver/:id/dailytrips/:tripId", async (req, res) => {
+//   try {
+//     const driver = await Driver.findById(req.params.id);
+//     const dailyTrips = driver.dailyTrips.find(
+//       (trip) => trip._id.toString() === req.params.tripId
+//     );
+//     res.json(dailyTrips);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+//update specific trip
+router.put("/driver/:id/dailytrips/:tripId", async (req, res) => {
+  try {
+    const driver = await Driver.findById(req.params.id);
+    const dailyTrips = driver.dailyTrips.find(
+      (trip) => trip._id.toString() === req.params.tripId
+    );
+    dailyTrips.aprroved = true;
+    const updatedDriver = await driver.save();
+    res.json(updatedDriver);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;

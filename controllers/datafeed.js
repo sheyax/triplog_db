@@ -31,32 +31,23 @@ router.get(
   }
 );
 
-// // update driver trips
-// router.put("/driver/:id", async (req, res) => {
-//   if (!ObjectId.isValid(req.params.id)) {
-//     return res.status(400).send("no record with given id: " + req.params.id);
-//   }
-
-//   var dataUpdate = {
-//     dailyTrips: req.body.dailyTrips,
-//   };
-
-//   console.log(dataUpdate);
-
-//   Driver.findByIdAndUpdate(
-//     req.params.id,
-//     { $set: dataUpdate },
-//     { $new: true },
-//     (err, docs) => {
-//       if (!err) {
-//         res.send(docs);
-//       } else {
-//         console.log(
-//           "Error updating the record" + JSON.stringify(err, undefined, 2)
-//         );
-//       }
-//     }
-//   );
-// });
+//update specific trip
+router.put(
+  "/driver/:id/dailytrips/:tripId",
+  jwtauth("supervisor"),
+  async (req, res) => {
+    try {
+      const driver = await Driver.findById(req.params.id);
+      const dailyTrips = driver.dailyTrips.find(
+        (trip) => trip._id.toString() === req.params.tripId
+      );
+      dailyTrips.aprroved = true;
+      const updatedDriver = await driver.save();
+      res.json(updatedDriver);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+);
 
 module.exports = router;
