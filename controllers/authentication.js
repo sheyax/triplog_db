@@ -327,6 +327,31 @@ router.get("/admin/user", jwtauth("admin"), async (req, res) => {
   }
 });
 
+router.get("/engineer/user", jwtauth("supervisor"), async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+    const claims = jwt.verify(cookie, "jwtSecret");
+    console.log(claims);
+
+    if (!claims) {
+      return res
+        .sendStatus(401)
+        .send({ message: "unauthenticated: no cookies" });
+    }
+
+    const engineer = await Engineer.findOne({
+      roles: claims.roles,
+    });
+    const { password, ...data } = await engineer.toJSON();
+
+    res.send(data);
+  } catch (error) {
+    return res.status(401).send({
+      message: "unauthenticated user",
+    });
+  }
+});
+
 // // update driver trips
 // router.put("/driver/:id", async (req, res) => {
 //   if (!ObjectId.isValid(req.params.id)) {

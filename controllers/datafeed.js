@@ -34,7 +34,7 @@ router.get(
 //update specific trip
 router.put(
   "/driver/:id/dailytrips/:tripId",
-  jwtauth("supervisor"),
+
   async (req, res) => {
     try {
       const driver = await Driver.findById(req.params.id);
