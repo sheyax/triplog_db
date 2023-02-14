@@ -94,10 +94,15 @@ router.post("/driver/login", async (req, res) => {
                   "jwtSecret"
                 );
 
-                res.cookie("jwt", token, {
-                  httpOnly: true,
-                  maxAge: 24 * 60 * 60 * 1000, //1 day
-                });
+                res.cookie(
+                  "jwt",
+                  token,
+                  {
+                    httpOnly: true,
+                    maxAge: 24 * 60 * 60 * 1000, //1 day
+                  },
+                  { signed: true }
+                );
 
                 res.json({
                   status: "success",
@@ -161,10 +166,15 @@ router.post("/admin/login", async (req, res) => {
                   "jwtSecret"
                 );
 
-                res.cookie("jwt", token, {
-                  httpOnly: true,
-                  maxAge: 24 * 60 * 60 * 1000, //1 day
-                });
+                res.cookie(
+                  "jwt",
+                  token,
+                  {
+                    httpOnly: true,
+                    maxAge: 24 * 60 * 60 * 1000, //1 day
+                  },
+                  { signed: true }
+                );
 
                 res.json({
                   status: "success",
@@ -228,10 +238,15 @@ router.post("/engineer/login", async (req, res) => {
                   "jwtSecret"
                 );
 
-                res.cookie("jwt", token, {
-                  httpOnly: true,
-                  maxAge: 24 * 60 * 60 * 1000, //1 day
-                });
+                res.cookie(
+                  "jwt",
+                  token,
+                  {
+                    httpOnly: true,
+                    maxAge: 24 * 60 * 60 * 1000, //1 day
+                  },
+                  { signed: true }
+                );
 
                 res.json({
                   status: "success",
