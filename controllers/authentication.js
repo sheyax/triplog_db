@@ -94,10 +94,15 @@ router.post("/driver/login", async (req, res) => {
                   "jwtSecret"
                 );
 
-                res.cookie("jwt", token, {
-                  httpOnly: true,
-                  maxAge: 24 * 60 * 60 * 1000, //1 day
-                });
+                res.cookie(
+                  "jwt",
+                  token,
+                  {
+                    httpOnly: true,
+                    maxAge: 24 * 60 * 60 * 1000, //1 day
+                  },
+                  { signed: true }
+                );
 
                 res.json({
                   status: "success",
@@ -161,10 +166,15 @@ router.post("/admin/login", async (req, res) => {
                   "jwtSecret"
                 );
 
-                res.cookie("jwt", token, {
-                  httpOnly: true,
-                  maxAge: 24 * 60 * 60 * 1000, //1 day
-                });
+                res.cookie(
+                  "jwt",
+                  token,
+                  {
+                    httpOnly: true,
+                    maxAge: 24 * 60 * 60 * 1000, //1 day
+                  },
+                  { signed: true }
+                );
 
                 res.json({
                   status: "success",
@@ -228,10 +238,15 @@ router.post("/engineer/login", async (req, res) => {
                   "jwtSecret"
                 );
 
-                res.cookie("jwt", token, {
-                  httpOnly: true,
-                  maxAge: 24 * 60 * 60 * 1000, //1 day
-                });
+                res.cookie(
+                  "jwt",
+                  token,
+                  {
+                    httpOnly: true,
+                    maxAge: 24 * 60 * 60 * 1000, //1 day
+                  },
+                  { signed: true }
+                );
 
                 res.json({
                   status: "success",
@@ -318,6 +333,31 @@ router.get("/admin/user", jwtauth("admin"), async (req, res) => {
       username: claims.username,
     });
     const { password, ...data } = await admin.toJSON();
+
+    res.send(data);
+  } catch (error) {
+    return res.status(401).send({
+      message: "unauthenticated user",
+    });
+  }
+});
+
+router.get("/engineer/user", jwtauth("supervisor"), async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+    const claims = jwt.verify(cookie, "jwtSecret");
+    console.log(claims);
+
+    if (!claims) {
+      return res
+        .sendStatus(401)
+        .send({ message: "unauthenticated: no cookies" });
+    }
+
+    const engineer = await Engineer.findOne({
+      roles: claims.roles,
+    });
+    const { password, ...data } = await engineer.toJSON();
 
     res.send(data);
   } catch (error) {

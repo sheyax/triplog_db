@@ -17,7 +17,7 @@ function jwtauthorize(roles = []) {
         return res.sendStatus(401).send({ message: "unauthenticated" });
       }
 
-      console.log(claims.roles);
+      //console.log(claims.roles);
 
       if (roles.length && !roles.includes(claims.roles)) {
         return res.status(401).json({ message: "Unauthorized" });
