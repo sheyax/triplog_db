@@ -9,7 +9,7 @@ const Engineer = require("../models/engineers");
 const jwtauth = require("./authorization");
 
 //driver register
-router.post("/driver/register", async (req, res) => {
+router.post("/driver/register", jwtauth("admin"), async (req, res) => {
   //Generate hashpassword
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
@@ -320,7 +320,7 @@ router.get("/admin/user", jwtauth("admin"), async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
     const claims = jwt.verify(cookie, "jwtSecret");
-    console.log(claims);
+    //console.log(claims);
 
     if (!claims) {
       return res
